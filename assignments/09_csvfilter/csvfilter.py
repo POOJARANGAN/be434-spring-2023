@@ -63,7 +63,7 @@ def main():
     args = get_args()
     src_val = args.val
     src_column = args.col
-    reader = csv.DictReader(args.file, delimiter=args.delimiter)
+    reader = csv.DictReader(args.file, delimiter=str(args.delimiter))
 
     if src_column:
         if src_column not in reader.fieldnames:
@@ -76,14 +76,16 @@ def main():
 
     line_b = 0
     for record in reader:
-        txt_val = record.get(src_column) if src_column else ' '.join(record.values())
+        txt_val = record.get(
+            src_column) if src_column else ' '.join(record.values())
 
         if re.search(src_val, txt_val, re.IGNORECASE):
             line_b += 1
             writer.writerow(record)
 
     print(f'Done, wrote {line_b:,} to "{args.outfile.name}".')
-    
+
+
 # --------------------------------------------------
 if __name__ == '__main__':
     main()
